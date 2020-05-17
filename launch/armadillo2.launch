@@ -12,9 +12,13 @@
     <arg name="z" default="0.0"/>
     <arg name="Y" default="0.0" />
     <arg name="moveit" default="false"/>
+    <!--
     <arg name="front_cam" default="false"/>
     <arg name="rear_cam" default="false"/>
-    <arg name="softkinetic" default="false"/>
+    <arg name="softkinetic" default="false"/> 
+    -->
+    <arg name="intel_cam" default="false"/>
+
     <arg name="kinect" default="false"/>
     <arg name="lidar" default="false"/>
     <arg name="gmapping" default="false"/>
@@ -70,7 +74,8 @@
     <!--load simulation stuff-->
     <group if="$(arg gazebo)">
          <env name="GAZEBO_MODEL_PATH" value="$(find armadillo2_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
-         <param name="robot_description" command="$(find xacro)/xacro '$(find armadillo2_description)/urdf/armadillo2_gazebo.xacro' --inorder 
+         <param name="robot_description" command="$(find xacro)/xacro '$(find armadillo2_description)/urdf/armadillo2_gazebo.xacro' --inorder
+		torso_effort_limit:=0.4 
                 kinect2:=$(arg kinect)
                 kinect2_hz:=30.0
                 kinect2_hd:=false
@@ -79,13 +84,30 @@
                 imu:=true
                 gps:=true
                 lidar:=true
-                softkinetic:=$(arg softkinetic)" />
+		intel_cam:=$(arg intel_cam)" />
+		<!--
+                softkinetic:=$(arg softkinetic)
+		-->
+		
+		<!-- #### BGU CS department ####-->
+           <param name="/robot_description_semantic" command="$(find xacro)/xacro '$(find armadillo2_description)/urdf/armadillo2_gazebo.xacro' --inorder 
+                kinect2:=$(arg kinect)
+                kinect2_hz:=30.0
+                kinect2_hd:=false
+                kinect2_qhd:=true
+                urf:=true
+                imu:=true
+                gps:=true
+                lidar:=true
+                intel_cam:=$(arg intel_cam)" />
+           <!-- ######################################################## -->
        
         <include file="$(find armadillo2_control)/launch/armadillo2_gazebo_controllers.launch" />
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">	    
               <arg name="world_name" value="$(arg world_name)"/>
-	      <arg name="gui" value="true"/>	     
+	      <arg name="gui" value="true"/>
+	<arg name="paused" value="false"/>	     
 	</include>
 
         <node name="armadillo2_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model armadillo2 -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg Y)" />
@@ -98,8 +120,13 @@
         
         <include file="$(find armadillo2_control)/launch/armadillo2_hw_controllers.launch" />
         
+	<!--
         <group if="$(arg softkinetic)">
             <include file="$(find softkinetic_camera)/launch/softkinetic_camera_ds325.launch" />
+        </group>
+	-->
+        <group if="$(arg intel_cam)">
+            <include file="$(find intel_d435)/launch/d435.launch" />
         </group>
     
         <group if="$(arg kinect)">
@@ -108,8 +135,13 @@
                 
         <group if="$(arg lidar)">
             <include file="$(find lidar_urg_node)/launch/lidar.launch" />
+
+	<!-- <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+	      <rosparam command="load" file="$(find laser_filters)/examples/range_filter.yaml" />
+            </node> -->
         </group>
         
+	<!--
          <group if="$(arg front_cam)">
             <include file="$(find usb_cams)/launch/front_cam.launch" />
         </group>
@@ -117,8 +149,10 @@
          <group if="$(arg rear_cam)">
             <include file="$(find usb_cams)/launch/rear_cam.launch" />
         </group>
-    </group>
-    
+	-->
+
+    </group>	
+
     <group if="$(arg twist_mux)">
         <include file="$(find ros_twist_mux)/launch/twist_mux.launch" />
     </group>

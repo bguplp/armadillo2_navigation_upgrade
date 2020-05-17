@@ -130,8 +130,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(poses_srv src/poses_srv.cpp)
-target_link_libraries(poses_srv ${catkin_LIBRARIES})
+add_executable(poses_srv_armadillo2 src/poses_srv.cpp)
+target_link_libraries(poses_srv_armadillo2 ${catkin_LIBRARIES})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
