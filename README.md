@@ -19,3 +19,14 @@ for basics configuration, use:
 ```bash
 $ rosrun dynamic_cfg move_base_basic.py
 ```
+
+* In order to use navigation_services_for_simulation.py. 
+
+run the file with:
+```bash
+$ rosrun armadillo2_navigation_upgrade navigation_services_for_simulation.py 
+```
+and then call the service you need, for exmpel:
+```bash
+$ rosservice call /elevator_go "{}"
+```

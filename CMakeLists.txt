@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   tf
   dynamic_reconfigure
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -64,11 +65,11 @@ find_package(catkin REQUIRED COMPONENTS moveit_ros_planning_interface)
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
+ add_service_files(
+   FILES
+   ser_message.srv
 #   Service2.srv
-# )
+ )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -78,10 +79,10 @@ find_package(catkin REQUIRED COMPONENTS moveit_ros_planning_interface)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -114,8 +115,8 @@ find_package(catkin REQUIRED COMPONENTS moveit_ros_planning_interface)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES tal
-#  CATKIN_DEPENDS roscpp rospy
+#  LIBRARIES armadillo2_navigation_upgrade
+  CATKIN_DEPENDS roscpp rospy message_runtime
 #  DEPENDS system_lib
 )
 
@@ -135,7 +136,7 @@ target_link_libraries(poses_srv_armadillo2 ${catkin_LIBRARIES})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/tal.cpp
+#   src/${PROJECT_NAME}/armadillo2_navigation_upgrade.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -146,7 +147,7 @@ target_link_libraries(poses_srv_armadillo2 ${catkin_LIBRARIES})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/tal_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/armadillo2_navigation_upgrade.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -203,7 +204,7 @@ target_link_libraries(poses_srv_armadillo2 ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_tal.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_armadillo2_navigation_upgrade.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
